@@ -19,19 +19,36 @@ export function resolveDevice(width) {
 // Custom hook that tracks the current device based on window.innerWidth.
 // Re-evaluates on every window resize so the A/B editor can switch views live.
 export default function useDevice() {
-  const [device, setDevice] = useState(() =>
-    typeof window === 'undefined' ? 'desktop' : resolveDevice(window.innerWidth)
-  );
+  const [device, setDevice] = useState(() => {
+    const d = typeof window === 'undefined'
+      ? 'desktop'
+      : resolveDevice(window.innerWidth);
+
+    console.log('INIT WIDTH:', window.innerWidth);
+    console.log('INIT DEVICE:', d);
+
+    return d;
+  });
 
   useEffect(() => {
     let frame = null;
+
     const handleResize = () => {
-      // rAF throttle so rapid resizes don't thrash React state
       if (frame) cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => setDevice(resolveDevice(window.innerWidth)));
+
+      frame = requestAnimationFrame(() => {
+        const width = window.innerWidth;
+        const d = resolveDevice(width);
+
+        console.log('RESIZE WIDTH:', width);
+        console.log('RESIZE DEVICE:', d);
+
+        setDevice(d);
+      });
     };
 
     window.addEventListener('resize', handleResize);
+
     return () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener('resize', handleResize);
