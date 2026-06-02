@@ -11,8 +11,6 @@ import CTA from '../components/CTA.jsx';
 // Home assembles the full marketing flow. Every section below renders
 // device-specific selectors so the A/B editor has plenty to target.
 export default function Home() {
-  const device = useDevice();
-  console.log('Current Device:', device);
   return (
     <main>
       <Hero />
