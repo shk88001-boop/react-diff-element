@@ -1,11 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Standard Vite + React setup. No backend, fully static SPA.
+function stripCrossorigin() {
+  return {
+    name: 'strip-crossorigin',
+    transformIndexHtml(html) {
+      return html.replace(/\s+crossorigin/g, '');
+    }
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 5180,
-    open: true
-  }
+  base: './',                       // relative asset paths — safer when embedded
+  plugins: [react(), stripCrossorigin()],
+  server: { port: 5180, open: true }
 });
