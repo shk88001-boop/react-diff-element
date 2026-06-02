@@ -18,6 +18,7 @@ const Brand = () => (
 
 export default function Navbar() {
   const device = useDevice();
+  console.log("device", device);
   const [open, setOpen] = useState(false);
 
   // DESKTOP: full inline links + a CTA on the right
